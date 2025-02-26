@@ -1,0 +1,1219 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Applicants Form</title>
+    <style>
+        /* Overall Page Style */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .sv_rick_container {
+            max-width: 650px;
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .sv_rick_heading {
+            padding: 10px;
+            border-radius: 5px;
+            text-align: center;
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 2%;
+        }
+
+        /* Form Row */
+        .sv_rick_row {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr 50px;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+            border-bottom: 1px solid #ccc;
+            padding-bottom: 10px;
+        }
+
+        .sv_rick_form_group {
+            display: flex;
+            flex-direction: column;
+            padding: 0px 10px;
+            align-items: flex-start;
+            align-self: baseline;
+        }
+
+        label {
+            font-weight: bold;
+            font-size: 14px;
+            margin-bottom: 5px;
+        }
+
+        select,
+        input {
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        /* Gender Radio Group (Inline) */
+        .sv_rick_radio_group {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .sv_rick_radio_group label {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        /* Reset Button (X) */
+        .sv_rick_reset_btn {
+            background: red;
+            color: white;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: none;
+            cursor: pointer;
+            font-size: 18px;
+            border-radius: 50%;
+        }
+
+        .sv_rick_reset_btn:hover {
+            background: darkred;
+        }
+
+        /* Submit and Reset Button Row */
+        .sv_rick_btn_row {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+        }
+
+        .sv_rick_btn {
+            flex: 1;
+            background: #007bff;
+            color: white;
+            padding: 12px;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 5px;
+            text-align: center;
+        }
+
+        .sv_rick_btn:hover {
+            background: #0056b3;
+        }
+
+        /* Warning Text */
+        .sv_rick_warning {
+            color: red;
+            font-size: 12px;
+            margin-top: 10px;
+            text-align: center;
+        }
+
+        .sv_rick_form_group>label {
+            margin-bottom: 20px;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 600px) {
+            .sv_rick_row {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .sv_rick_btn_row {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="sv_rick_container">
+        <div class="sv_rick_heading">Insurane Premium Quote Calculator</div>
+
+        <!-- First Row: Self -->
+        <div class="sv_rick_row">
+            <div class="sv_rick_form_group">
+                <label>Age</label>
+                <select id="sv_rick_ageSelf"></select>
+            </div>
+
+            <div class="sv_rick_form_group">
+                <label>Gender</label>
+                <div class="sv_rick_radio_group">
+                    <label>Male <input type="radio" name="sv_rick_gender1" value="Male"> </label>
+                    <label>Female <input type="radio" name="sv_rick_gender1" value="Female"> </label>
+                </div>
+            </div>
+
+            <div class="sv_rick_form_group">
+                <label>Relationship</label>
+                <span>Self</span>
+            </div>
+
+            <button class="sv_rick_reset_btn" onclick="sv_rick_resetSelf()">×</button>
+        </div>
+
+        <!-- Second Row: Spouse -->
+        <div class="sv_rick_row" id="sv_rick_spouseRow">
+            <div class="sv_rick_form_group">
+                <label>Age</label>
+                <select id="sv_rick_spouseAge"></select>
+            </div>
+
+            <div class="sv_rick_form_group">
+                <label>Gender</label>
+                <div class="sv_rick_radio_group">
+                    <label>Male <input type="radio" name="sv_rick_gender2" value="Male"> </label>
+                    <label>Female <input type="radio" name="sv_rick_gender2" value="Female"> </label>
+                </div>
+            </div>
+
+            <div class="sv_rick_form_group">
+                <label>Relationship</label>
+                <span>Spouse</span>
+            </div>
+
+            <button class="sv_rick_reset_btn" onclick="sv_rick_resetSpouse()">×</button>
+        </div>
+
+        <!-- Third Row: Children -->
+        <div class="sv_rick_row">
+            <div class="sv_rick_form_group">
+                <label>Number of Children</label>
+                <select id="sv_rick_childrenCount"></select>
+            </div>
+            <button class="sv_rick_reset_btn" onclick="sv_rick_resetChildren()">×</button>
+        </div>
+
+        <!-- Submit and Reset Buttons -->
+        <div class="sv_rick_btn_row">
+            <button class="sv_rick_btn">Submit</button>
+            <button class="sv_rick_btn" style="background: #6c757d;" onclick="sv_rick_resetForm()">Reset</button>
+        </div>
+
+        <div id="summaryCard"
+            style="display:none; background:#f9f9f9; padding:10px; border-radius:5px; margin-top:10px; box-shadow:0px 0px 10px rgba(0, 0, 0, 0.1);">
+        </div>
+
+        <div class="" id="sv_card_container_premiums" style="display:none;">
+
+            <div id="insuranceCardContainer" class="sv_rick_cards">
+                <h3>America's Choice Information</h3>
+            </div>
+        </div>
+
+
+
+
+    </div>
+
+    <script>
+        const insurancePlans = [
+            {
+                deductible: "$250 DED",
+                rates: {
+                    "18-29": { E: 329, ES: 619, EC: 599, EF: 849 },
+                    "30-44": { E: 379, ES: 679, EC: 649, EF: 909 },
+                    "45-54": { E: 409, ES: 699, EC: 679, EF: 929 },
+                    "55-64": { E: 449, ES: 709, EC: 689, EF: 949 }
+                }
+            },
+            {
+                deductible: "$500 DED",
+                rates: {
+                    "18-29": { E: 309, ES: 599, EC: 579, EF: 809 },
+                    "30-44": { E: 349, ES: 639, EC: 619, EF: 879 },
+                    "45-54": { E: 379, ES: 679, EC: 649, EF: 899 },
+                    "55-64": { E: 429, ES: 689, EC: 659, EF: 929 }
+                }
+            },
+            {
+                deductible: "$750 DED",
+                rates: {
+                    "18-29": { E: 289, ES: 579, EC: 559, EF: 799 },
+                    "30-44": { E: 329, ES: 619, EC: 589, EF: 839 },
+                    "45-54": { E: 359, ES: 659, EC: 629, EF: 889 },
+                    "55-64": { E: 409, ES: 669, EC: 639, EF: 909 }
+                }
+            },
+            {
+                deductible: "$7350 DED",
+                rates: {
+                    "18-29": { E: 578.95, ES: 1018.91, EC: 932.92, EF: 1463.87 },
+                    "30-44": { E: 596.15, ES: 1053.31, EC: 963.87, EF: 1515.47 },
+                    "45-54": { E: 617.61, ES: 1096.22, EC: 1002.49, EF: 1579.84 },
+                    "55-64": { E: 661.67, ES: 1184.34, EC: 1081.80, EF: 1712.02 }
+                }
+            },
+            {
+                deductible: "$5000 DED HAS",
+                rates: {
+                    "18-29": { E: 607.21, ES: 1074.41, EC: 982.97, EF: 1546.63 },
+                    "30-44": { E: 625.50, ES: 1110.99, EC: 1015.89, EF: 1601.49 },
+                    "45-54": { E: 648.32, ES: 1156.62, EC: 1056.96, EF: 1669.94 },
+                    "55-64": { E: 695.17, ES: 1250.32, EC: 1141.29, EF: 1810.49 }
+                }
+            }
+        ];
+
+        const palic_2units_individual = [
+            { age: 1, male: 99.29, female: 107.60, individualChildren: 83.23 },
+            { age: 2, male: 99.29, female: 107.60, individualChildren: 83.23 },
+            { age: 3, male: 99.29, female: 107.60, individualChildren: 83.23 },
+            { age: 4, male: 99.29, female: 107.60, individualChildren: 83.23 },
+            { age: 5, male: 99.29, female: 107.60, individualChildren: 83.23 },
+            { age: 6, male: 99.29, female: 107.60, individualChildren: 83.23 },
+            { age: 7, male: 99.29, female: 107.60, individualChildren: 83.23 },
+            { age: 8, male: 99.29, female: 107.60, individualChildren: 83.23 },
+            { age: 9, male: 99.29, female: 107.60, individualChildren: 83.23 },
+            { age: 10, male: 99.29, female: 107.60, individualChildren: 83.23 },
+            { age: 11, male: 99.29, female: 107.60, individualChildren: 83.23 },
+            { age: 12, male: 99.29, female: 107.60, individualChildren: 83.23 },
+            { age: 13, male: 99.29, female: 107.60, individualChildren: 83.23 },
+            { age: 14, male: 99.29, female: 107.60, individualChildren: 83.23 },
+            { age: 15, male: 99.29, female: 107.60, individualChildren: 83.23 },
+            { age: 16, male: 99.29, female: 107.60, individualChildren: 83.23 },
+            { age: 17, male: 99.29, female: 107.60, individualChildren: 83.23 },
+            { age: 18, male: 107.14, female: 113.88, individualChildren: 83.23 },
+            { age: 19, male: 107.14, female: 113.88, individualChildren: 83.23 },
+            { age: 20, male: 107.14, female: 113.88, individualChildren: 83.23 },
+            { age: 21, male: 107.14, female: 113.88, individualChildren: 83.23 },
+            { age: 22, male: 107.14, female: 113.88, individualChildren: 83.23 },
+            { age: 23, male: 107.14, female: 113.88, individualChildren: 83.23 },
+            { age: 24, male: 107.14, female: 113.88, individualChildren: 83.23 },
+            { age: 25, male: 107.14, female: 113.88, individualChildren: 83.23 },
+            { age: 26, male: 109.00, female: 115.85, individualChildren: 83.23 },
+            { age: 27, male: 110.89, female: 117.77, individualChildren: 83.23 },
+            { age: 28, male: 112.79, female: 119.74, individualChildren: 83.23 },
+            { age: 29, male: 114.65, female: 121.69, individualChildren: 83.23 },
+            { age: 30, male: 116.74, female: 123.81, individualChildren: 83.23 },
+            { age: 31, male: 119.77, female: 126.78, individualChildren: 83.23 },
+            { age: 32, male: 122.81, female: 129.79, individualChildren: 83.23 },
+            { age: 33, male: 125.79, female: 132.76, individualChildren: 83.23 },
+            { age: 34, male: 128.84, female: 135.76, individualChildren: 83.23 },
+            { age: 35, male: 131.90, female: 138.74, individualChildren: 83.23 },
+            { age: 36, male: 135.79, female: 142.27, individualChildren: 83.23 },
+            { age: 37, male: 139.70, female: 145.81, individualChildren: 83.23 },
+            { age: 38, male: 143.58, female: 149.36, individualChildren: 83.23 },
+            { age: 39, male: 147.53, female: 152.92, individualChildren: 83.23 },
+            { age: 40, male: 151.50, female: 156.44, individualChildren: 83.23 },
+            { age: 41, male: 158.38, female: 162.48, individualChildren: 83.23 },
+            { age: 42, male: 165.28, female: 168.46, individualChildren: 83.23 },
+            { age: 43, male: 172.18, female: 174.50, individualChildren: 83.23 },
+            { age: 44, male: 179.09, female: 180.55, individualChildren: 83.23 },
+            { age: 45, male: 186.01, female: 186.55, individualChildren: 83.23 },
+            { age: 46, male: 193.03, female: 192.69, individualChildren: 83.23 },
+            { age: 47, male: 200.09, female: 198.81, individualChildren: 83.23 },
+            { age: 48, male: 207.14, female: 204.94, individualChildren: 83.23 },
+            { age: 49, male: 214.23, female: 211.09, individualChildren: 83.23 },
+            { age: 50, male: 221.38, female: 217.27, individualChildren: 83.23 },
+            { age: 51, male: 232.29, female: 224.99, individualChildren: 83.23 },
+            { age: 52, male: 243.21, female: 232.68, individualChildren: 83.23 },
+            { age: 53, male: 254.17, female: 240.37, individualChildren: 83.23 },
+            { age: 54, male: 265.13, female: 248.08, individualChildren: 83.23 },
+            { age: 55, male: 276.08, female: 255.81, individualChildren: 83.23 },
+            { age: 56, male: 286.87, female: 263.83, individualChildren: 83.23 },
+            { age: 57, male: 297.74, female: 271.87, individualChildren: 83.23 },
+            { age: 58, male: 308.57, female: 279.92, individualChildren: 83.23 },
+            { age: 59, male: 319.40, female: 287.96, individualChildren: 83.23 },
+            { age: 60, male: 330.21, female: 295.98, individualChildren: 84.29 },
+            { age: 61, male: 341.69, female: 304.42, individualChildren: 84.29 },
+            { age: 62, male: 353.20, female: 312.90, individualChildren: 84.29 },
+            { age: 63, male: 364.69, female: 321.37, individualChildren: 84.29 },
+            { age: 64, male: 376.18, female: 329.80, individualChildren: 84.29 }
+        ];
+
+        const palic_2units_accident = [
+            { age: 1, individual: 20.13, individualChild: 69.00, individualSpouse: 56.93, family: 94.88 },
+            { age: 2, individual: 20.13, individualChild: 69.00, individualSpouse: 56.93, family: 94.88 },
+            { age: 3, individual: 20.13, individualChild: 69.00, individualSpouse: 56.93, family: 94.88 },
+            { age: 4, individual: 20.13, individualChild: 69.00, individualSpouse: 56.93, family: 94.88 },
+            { age: 5, individual: 20.13, individualChild: 69.00, individualSpouse: 56.93, family: 94.88 },
+            { age: 6, individual: 20.13, individualChild: 69.00, individualSpouse: 56.93, family: 94.88 },
+            { age: 7, individual: 20.13, individualChild: 69.00, individualSpouse: 56.93, family: 94.88 },
+            { age: 8, individual: 20.13, individualChild: 69.00, individualSpouse: 56.93, family: 94.88 },
+            { age: 9, individual: 20.13, individualChild: 69.00, individualSpouse: 56.93, family: 94.88 },
+            { age: 10, individual: 20.13, individualChild: 69.00, individualSpouse: 56.93, family: 94.88 },
+            { age: 11, individual: 20.13, individualChild: 69.00, individualSpouse: 56.93, family: 94.88 },
+            { age: 12, individual: 20.13, individualChild: 69.00, individualSpouse: 56.93, family: 94.88 },
+            { age: 13, individual: 20.13, individualChild: 69.00, individualSpouse: 56.93, family: 94.88 },
+            { age: 14, individual: 20.13, individualChild: 69.00, individualSpouse: 56.93, family: 94.88 },
+            { age: 15, individual: 20.13, individualChild: 69.00, individualSpouse: 56.93, family: 94.88 },
+            { age: 16, individual: 20.13, individualChild: 69.00, individualSpouse: 56.93, family: 94.88 },
+            { age: 17, individual: 20.13, individualChild: 69.00, individualSpouse: 56.93, family: 94.88 },
+            { age: 18, individual: 20.13, individualChild: 69.00, individualSpouse: 56.93, family: 94.88 },
+            { age: 19, individual: 31.05, individualChild: 69.00, individualSpouse: 56.93, family: 94.88 },
+            { age: 20, individual: 31.05, individualChild: 69.00, individualSpouse: 56.93, family: 94.88 },
+            { age: 21, individual: 31.05, individualChild: 69.00, individualSpouse: 56.93, family: 94.88 },
+            { age: 22, individual: 31.05, individualChild: 69.00, individualSpouse: 56.93, family: 94.88 },
+            { age: 23, individual: 31.05, individualChild: 69.00, individualSpouse: 56.93, family: 94.88 },
+            { age: 24, individual: 31.05, individualChild: 69.00, individualSpouse: 56.93, family: 94.88 },
+            { age: 25, individual: 31.05, individualChild: 69.00, individualSpouse: 56.93, family: 94.88 },
+            { age: 26, individual: 31.05, individualChild: 69.00, individualSpouse: 56.93, family: 94.88 },
+            { age: 27, individual: 31.05, individualChild: 69.00, individualSpouse: 56.93, family: 94.88 },
+            { age: 28, individual: 31.05, individualChild: 69.00, individualSpouse: 56.93, family: 94.88 },
+            { age: 29, individual: 31.05, individualChild: 69.00, individualSpouse: 56.93, family: 94.88 },
+            { age: 30, individual: 31.05, individualChild: 69.00, individualSpouse: 56.93, family: 94.88 },
+            { age: 31, individual: 31.05, individualChild: 69.00, individualSpouse: 56.93, family: 94.88 },
+            { age: 32, individual: 31.05, individualChild: 69.00, individualSpouse: 56.93, family: 94.88 },
+            { age: 33, individual: 31.05, individualChild: 69.00, individualSpouse: 56.93, family: 94.88 },
+            { age: 34, individual: 31.05, individualChild: 69.00, individualSpouse: 56.93, family: 94.88 },
+            { age: 35, individual: 31.05, individualChild: 69.00, individualSpouse: 56.93, family: 94.88 },
+            { age: 36, individual: 31.05, individualChild: 69.00, individualSpouse: 56.93, family: 94.88 },
+            { age: 37, individual: 31.05, individualChild: 69.00, individualSpouse: 56.93, family: 94.88 },
+            { age: 38, individual: 31.05, individualChild: 69.00, individualSpouse: 56.93, family: 94.88 },
+            { age: 39, individual: 31.05, individualChild: 69.00, individualSpouse: 56.93, family: 94.88 },
+            { age: 40, individual: 31.05, individualChild: 69.00, individualSpouse: 56.93, family: 94.88 },
+            { age: 41, individual: 31.05, individualChild: 69.00, individualSpouse: 56.93, family: 94.88 },
+            { age: 42, individual: 31.05, individualChild: 69.00, individualSpouse: 56.93, family: 94.88 },
+            { age: 43, individual: 31.05, individualChild: 69.00, individualSpouse: 56.93, family: 94.88 },
+            { age: 44, individual: 31.05, individualChild: 69.00, individualSpouse: 56.93, family: 94.88 },
+            { age: 45, individual: 31.05, individualChild: 69.00, individualSpouse: 56.93, family: 94.88 },
+            { age: 46, individual: 31.05, individualChild: 69.00, individualSpouse: 56.93, family: 94.88 },
+            { age: 47, individual: 31.05, individualChild: 69.00, individualSpouse: 56.93, family: 94.88 },
+            { age: 48, individual: 31.05, individualChild: 69.00, individualSpouse: 56.93, family: 94.88 },
+            { age: 64, individual: 31.05, individualChild: 69.00, individualSpouse: 56.93, family: 94.88 }
+        ];
+
+        const palic_2units_car_accident = [
+            { age: 1, male: 18.55, female: 24.26 },
+            { age: 2, male: 18.55, female: 24.26 },
+            { age: 3, male: 18.55, female: 24.26 },
+            { age: 4, male: 18.55, female: 24.26 },
+            { age: 5, male: 18.55, female: 24.26 },
+            { age: 6, male: 18.55, female: 24.26 },
+            { age: 7, male: 18.55, female: 24.26 },
+            { age: 8, male: 18.55, female: 24.26 },
+            { age: 9, male: 18.55, female: 24.26 },
+            { age: 10, male: 18.55, female: 24.26 },
+            { age: 11, male: 18.55, female: 24.26 },
+            { age: 12, male: 18.55, female: 24.26 },
+            { age: 13, male: 18.55, female: 24.26 },
+            { age: 14, male: 18.55, female: 24.26 },
+            { age: 15, male: 18.55, female: 24.26 },
+            { age: 16, male: 18.55, female: 24.26 },
+            { age: 17, male: 18.55, female: 24.26 },
+            { age: 18, male: 18.55, female: 24.26 },
+            { age: 19, male: 18.55, female: 24.26 },
+            { age: 20, male: 18.55, female: 24.26 },
+            { age: 21, male: 18.55, female: 24.26 },
+            { age: 22, male: 18.55, female: 24.26 },
+            { age: 23, male: 18.55, female: 24.26 },
+            { age: 24, male: 18.55, female: 24.26 },
+            { age: 25, male: 18.55, female: 24.26 },
+            { age: 26, male: 18.72, female: 24.82 },
+            { age: 27, male: 18.87, female: 25.38 },
+            { age: 28, male: 19.02, female: 25.94 },
+            { age: 29, male: 19.17, female: 26.50 },
+            { age: 30, male: 19.32, female: 27.07 },
+            { age: 31, male: 19.47, female: 27.07 },
+            { age: 32, male: 19.63, female: 27.07 },
+            { age: 33, male: 19.78, female: 27.07 },
+            { age: 34, male: 19.93, female: 27.07 },
+            { age: 35, male: 20.08, female: 27.07 },
+            { age: 36, male: 20.23, female: 27.07 },
+            { age: 37, male: 20.37, female: 27.07 },
+            { age: 38, male: 20.67, female: 27.07 },
+            { age: 39, male: 20.91, female: 27.35 },
+            { age: 40, male: 21.16, female: 27.64 },
+            { age: 41, male: 21.45, female: 27.82 },
+            { age: 42, male: 21.16, female: 28.08 },
+            { age: 43, male: 22.04, female: 27.99 },
+            { age: 44, male: 22.40, female: 28.08 },
+            { age: 45, male: 22.64, female: 28.08 },
+            { age: 46, male: 23.03, female: 28.09 },
+            { age: 47, male: 23.42, female: 28.15 },
+            { age: 48, male: 23.81, female: 28.15 },
+            { age: 49, male: 24.20, female: 28.15 },
+            { age: 50, male: 24.59, female: 28.15 },
+            { age: 51, male: 24.98, female: 28.15 },
+            { age: 52, male: 25.37, female: 28.15 },
+            { age: 53, male: 25.76, female: 28.15 },
+            { age: 54, male: 26.16, female: 28.15 },
+            { age: 55, male: 26.16, female: 28.15 },
+            { age: 56, male: 26.16, female: 28.15 },
+            { age: 57, male: 26.16, female: 28.15 },
+            { age: 58, male: 26.16, female: 28.15 },
+            { age: 59, male: 26.16, female: 28.15 },
+            { age: 60, male: 26.16, female: 28.15 },
+            { age: 61, male: 26.16, female: 28.15 },
+            { age: 62, male: 26.16, female: 28.15 },
+            { age: 63, male: 26.16, female: 28.15 },
+            { age: 64, male: 26.16, female: 28.15 }
+        ];
+
+        const palic_2units_sd = [
+            { age: 1, male: 5.04, female: 6.45 },
+            { age: 2, male: 5.04, female: 6.45 },
+            { age: 3, male: 5.04, female: 6.45 },
+            { age: 4, male: 5.04, female: 6.45 },
+            { age: 5, male: 5.04, female: 6.45 },
+            { age: 6, male: 5.04, female: 6.45 },
+            { age: 7, male: 5.04, female: 6.45 },
+            { age: 8, male: 5.04, female: 6.45 },
+            { age: 9, male: 5.04, female: 6.45 },
+            { age: 10, male: 5.04, female: 6.45 },
+            { age: 11, male: 5.04, female: 6.45 },
+            { age: 12, male: 5.04, female: 6.45 },
+            { age: 13, male: 5.04, female: 6.45 },
+            { age: 14, male: 5.04, female: 6.45 },
+            { age: 15, male: 5.04, female: 6.45 },
+            { age: 16, male: 5.04, female: 6.45 },
+            { age: 17, male: 5.04, female: 6.45 },
+            { age: 18, male: 5.04, female: 6.45 },
+            { age: 19, male: 5.04, female: 6.45 },
+            { age: 20, male: 5.04, female: 6.45 },
+            { age: 21, male: 5.04, female: 6.45 },
+            { age: 22, male: 5.04, female: 6.45 },
+            { age: 23, male: 5.04, female: 6.45 },
+            { age: 24, male: 5.04, female: 6.45 },
+            { age: 25, male: 5.04, female: 6.45 },
+            { age: 26, male: 5.13, female: 6.59 },
+            { age: 27, male: 5.20, female: 6.73 },
+            { age: 28, male: 5.29, female: 6.87 },
+            { age: 29, male: 5.37, female: 7.00 },
+            { age: 30, male: 5.46, female: 7.14 },
+            { age: 31, male: 5.69, female: 7.47 },
+            { age: 32, male: 5.94, female: 7.81 },
+            { age: 33, male: 6.19, female: 8.14 },
+            { age: 34, male: 6.46, female: 8.48 },
+            { age: 35, male: 6.71, female: 8.82 },
+            { age: 36, male: 7.25, female: 9.47 },
+            { age: 37, male: 7.85, female: 10.15 },
+            { age: 38, male: 8.39, female: 10.87 },
+            { age: 39, male: 8.95, female: 11.62 },
+            { age: 40, male: 9.55, female: 12.40 },
+            { age: 41, male: 10.45, female: 13.49 },
+            { age: 42, male: 11.39, female: 14.65 },
+            { age: 43, male: 12.50, female: 15.84 },
+            { age: 44, male: 13.70, female: 17.16 },
+            { age: 45, male: 14.94, female: 18.45 },
+            { age: 46, male: 16.33, female: 19.65 },
+            { age: 47, male: 17.73, female: 20.91 },
+            { age: 48, male: 19.24, female: 22.21 },
+            { age: 49, male: 20.84, female: 23.57 },
+            { age: 50, male: 22.51, female: 25.01 },
+            { age: 51, male: 24.54, female: 26.66 },
+            { age: 52, male: 26.64, female: 28.40 },
+            { age: 53, male: 28.89, female: 30.21 },
+            { age: 54, male: 31.23, female: 32.08 },
+            { age: 55, male: 33.68, female: 34.09 },
+            { age: 56, male: 36.62, female: 36.24 },
+            { age: 57, male: 39.69, female: 38.51 },
+            { age: 58, male: 42.87, female: 40.75 },
+            { age: 59, male: 46.21, female: 43.09 },
+            { age: 60, male: 66.14, female: 60.71 },
+            { age: 61, male: 70.23, female: 64.28 },
+            { age: 62, male: 74.48, female: 67.95 },
+            { age: 63, male: 78.70, female: 71.74 },
+            { age: 64, male: 83.21, female: 75.61 }
+        ];
+
+        // Palic 3 units variables...
+
+        const palic_3units_individual = [
+            { age: 1, male: 148.93, female: 161.41, individualChildren: 117.36 },
+            { age: 2, male: 148.93, female: 161.41, individualChildren: 117.36 },
+            { age: 3, male: 148.93, female: 161.41, individualChildren: 117.36 },
+            { age: 4, male: 148.93, female: 161.41, individualChildren: 117.36 },
+            { age: 5, male: 148.93, female: 161.41, individualChildren: 117.36 },
+            { age: 6, male: 148.93, female: 161.41, individualChildren: 117.36 },
+            { age: 7, male: 148.93, female: 161.41, individualChildren: 117.36 },
+            { age: 8, male: 148.93, female: 161.41, individualChildren: 117.36 },
+            { age: 9, male: 148.93, female: 161.41, individualChildren: 117.36 },
+            { age: 10, male: 148.93, female: 161.41, individualChildren: 117.36 },
+            { age: 11, male: 148.93, female: 161.41, individualChildren: 117.36 },
+            { age: 12, male: 148.93, female: 161.41, individualChildren: 117.36 },
+            { age: 13, male: 148.93, female: 161.41, individualChildren: 117.36 },
+            { age: 14, male: 148.93, female: 161.41, individualChildren: 117.36 },
+            { age: 15, male: 148.93, female: 161.41, individualChildren: 117.36 },
+            { age: 16, male: 148.93, female: 161.41, individualChildren: 117.36 },
+            { age: 17, male: 148.93, female: 161.41, individualChildren: 117.36 },
+            { age: 18, male: 156.78, female: 167.69, individualChildren: 117.36 },
+            { age: 19, male: 156.78, female: 167.69, individualChildren: 117.36 },
+            { age: 20, male: 156.78, female: 167.69, individualChildren: 117.36 },
+            { age: 21, male: 156.78, female: 167.69, individualChildren: 117.36 },
+            { age: 22, male: 156.78, female: 167.69, individualChildren: 117.36 },
+            { age: 23, male: 156.78, female: 167.69, individualChildren: 117.36 },
+            { age: 24, male: 156.78, female: 167.69, individualChildren: 117.36 },
+            { age: 25, male: 156.78, female: 167.69, individualChildren: 117.36 },
+            { age: 26, male: 159.40, female: 170.49, individualChildren: 117.36 },
+            { age: 27, male: 162.04, female: 173.23, individualChildren: 117.36 },
+            { age: 28, male: 164.71, female: 176.03, individualChildren: 117.36 },
+            { age: 29, male: 167.33, female: 178.81, individualChildren: 117.36 },
+            { age: 30, male: 170.17, female: 181.76, individualChildren: 117.36 },
+            { age: 31, male: 174.36, female: 186.01, individualChildren: 117.36 },
+            { age: 32, male: 178.57, female: 190.30, individualChildren: 117.36 },
+            { age: 33, male: 182.71, female: 194.55, individualChildren: 117.36 },
+            { age: 34, male: 186.92, female: 198.82, individualChildren: 117.36 },
+            { age: 35, male: 191.13, female: 203.08, individualChildren: 117.36 },
+            { age: 36, male: 196.19, female: 207.88, individualChildren: 117.36 },
+            { age: 37, male: 201.24, female: 212.71, individualChildren: 117.36 },
+            { age: 38, male: 206.29, female: 217.53, individualChildren: 117.36 },
+            { age: 39, male: 211.41, female: 222.37, individualChildren: 117.36 },
+            { age: 40, male: 216.54, female: 227.16, individualChildren: 117.36 },
+            { age: 41, male: 226.02, female: 235.63, individualChildren: 117.36 },
+            { age: 42, male: 235.55, female: 244.05, individualChildren: 117.36 },
+            { age: 43, male: 245.06, female: 252.50, individualChildren: 117.36 },
+            { age: 44, male: 254.59, female: 260.97, individualChildren: 117.36 },
+            { age: 45, male: 264.12, female: 269.41, individualChildren: 117.36 },
+            { age: 46, male: 273.75, female: 277.97, individualChildren: 117.36 },
+            { age: 47, male: 283.44, female: 286.51, individualChildren: 117.36 },
+            { age: 48, male: 293.09, female: 295.08, individualChildren: 117.36 },
+            { age: 49, male: 302.79, female: 303.64, individualChildren: 117.36 },
+            { age: 50, male: 312.55, female: 312.25, individualChildren: 117.36 },
+            { age: 51, male: 327.72, female: 323.24, individualChildren: 117.36 },
+            { age: 52, male: 342.89, female: 334.18, individualChildren: 117.36 },
+            { age: 53, male: 358.11, female: 345.14, individualChildren: 117.36 },
+            { age: 54, male: 373.33, female: 356.10, individualChildren: 117.36 },
+            { age: 55, male: 388.52, female: 367.09, individualChildren: 117.36 },
+            { age: 56, male: 403.56, female: 378.37, individualChildren: 117.36 },
+            { age: 57, male: 418.69, female: 389.67, individualChildren: 117.36 },
+            { age: 58, male: 433.78, female: 400.97, individualChildren: 117.36 },
+            { age: 59, male: 448.85, female: 412.27, individualChildren: 117.36 },
+            { age: 60, male: 463.92, female: 423.56, individualChildren: 118.42 },
+            { age: 61, male: 479.66, female: 435.26, individualChildren: 118.42 },
+            { age: 62, male: 495.43, female: 447.00, individualChildren: 118.42 },
+            { age: 63, male: 511.18, female: 458.73, individualChildren: 118.42 },
+            { age: 64, male: 526.91, female: 470.42, individualChildren: 118.42 }
+        ];
+
+        const palic_3units_accident = [
+            { age: 1, individual: 20.13, individualChild: 69.00, individualSpouse: 56.93, family: 94.88 },
+            { age: 2, individual: 20.13, individualChild: 69.00, individualSpouse: 56.93, family: 94.88 },
+            { age: 3, individual: 20.13, individualChild: 69.00, individualSpouse: 56.93, family: 94.88 },
+            { age: 4, individual: 20.13, individualChild: 69.00, individualSpouse: 56.93, family: 94.88 },
+            { age: 5, individual: 20.13, individualChild: 69.00, individualSpouse: 56.93, family: 94.88 },
+            { age: 6, individual: 20.13, individualChild: 69.00, individualSpouse: 56.93, family: 94.88 },
+            { age: 7, individual: 20.13, individualChild: 69.00, individualSpouse: 56.93, family: 94.88 },
+            { age: 8, individual: 20.13, individualChild: 69.00, individualSpouse: 56.93, family: 94.88 },
+            { age: 9, individual: 20.13, individualChild: 69.00, individualSpouse: 56.93, family: 94.88 },
+            { age: 10, individual: 20.13, individualChild: 69.00, individualSpouse: 56.93, family: 94.88 },
+            { age: 11, individual: 20.13, individualChild: 69.00, individualSpouse: 56.93, family: 94.88 },
+            { age: 12, individual: 20.13, individualChild: 69.00, individualSpouse: 56.93, family: 94.88 },
+            { age: 13, individual: 20.13, individualChild: 69.00, individualSpouse: 56.93, family: 94.88 },
+            { age: 14, individual: 20.13, individualChild: 69.00, individualSpouse: 56.93, family: 94.88 },
+            { age: 15, individual: 20.13, individualChild: 69.00, individualSpouse: 56.93, family: 94.88 },
+            { age: 16, individual: 20.13, individualChild: 69.00, individualSpouse: 56.93, family: 94.88 },
+            { age: 17, individual: 20.13, individualChild: 69.00, individualSpouse: 56.93, family: 94.88 },
+            { age: 18, individual: 20.13, individualChild: 69.00, individualSpouse: 56.93, family: 94.88 },
+            { age: 19, individual: 31.05, individualChild: 69.00, individualSpouse: 56.93, family: 94.88 },
+            { age: 20, individual: 31.05, individualChild: 69.00, individualSpouse: 56.93, family: 94.88 },
+            { age: 21, individual: 31.05, individualChild: 69.00, individualSpouse: 56.93, family: 94.88 },
+            { age: 22, individual: 31.05, individualChild: 69.00, individualSpouse: 56.93, family: 94.88 },
+            { age: 23, individual: 31.05, individualChild: 69.00, individualSpouse: 56.93, family: 94.88 },
+            { age: 24, individual: 31.05, individualChild: 69.00, individualSpouse: 56.93, family: 94.88 },
+            { age: 25, individual: 31.05, individualChild: 69.00, individualSpouse: 56.93, family: 94.88 },
+            { age: 26, individual: 31.05, individualChild: 69.00, individualSpouse: 56.93, family: 94.88 },
+            { age: 27, individual: 31.05, individualChild: 69.00, individualSpouse: 56.93, family: 94.88 },
+            { age: 28, individual: 31.05, individualChild: 69.00, individualSpouse: 56.93, family: 94.88 },
+            { age: 29, individual: 31.05, individualChild: 69.00, individualSpouse: 56.93, family: 94.88 },
+            { age: 30, individual: 31.05, individualChild: 69.00, individualSpouse: 56.93, family: 94.88 },
+            { age: 31, individual: 31.05, individualChild: 69.00, individualSpouse: 56.93, family: 94.88 },
+            { age: 32, individual: 31.05, individualChild: 69.00, individualSpouse: 56.93, family: 94.88 },
+            { age: 33, individual: 31.05, individualChild: 69.00, individualSpouse: 56.93, family: 94.88 },
+            { age: 34, individual: 31.05, individualChild: 69.00, individualSpouse: 56.93, family: 94.88 },
+            { age: 35, individual: 31.05, individualChild: 69.00, individualSpouse: 56.93, family: 94.88 },
+            { age: 36, individual: 31.05, individualChild: 69.00, individualSpouse: 56.93, family: 94.88 },
+            { age: 37, individual: 31.05, individualChild: 69.00, individualSpouse: 56.93, family: 94.88 },
+            { age: 38, individual: 31.05, individualChild: 69.00, individualSpouse: 56.93, family: 94.88 },
+            { age: 39, individual: 31.05, individualChild: 69.00, individualSpouse: 56.93, family: 94.88 },
+            { age: 40, individual: 31.05, individualChild: 69.00, individualSpouse: 56.93, family: 94.88 },
+            { age: 41, individual: 31.05, individualChild: 69.00, individualSpouse: 56.93, family: 94.88 },
+            { age: 42, individual: 31.05, individualChild: 69.00, individualSpouse: 56.93, family: 94.88 },
+            { age: 43, individual: 31.05, individualChild: 69.00, individualSpouse: 56.93, family: 94.88 },
+            { age: 44, individual: 31.05, individualChild: 69.00, individualSpouse: 56.93, family: 94.88 },
+            { age: 45, individual: 31.05, individualChild: 69.00, individualSpouse: 56.93, family: 94.88 },
+            { age: 46, individual: 31.05, individualChild: 69.00, individualSpouse: 56.93, family: 94.88 },
+            { age: 47, individual: 31.05, individualChild: 69.00, individualSpouse: 56.93, family: 94.88 },
+            { age: 48, individual: 31.05, individualChild: 69.00, individualSpouse: 56.93, family: 94.88 },
+            { age: 49, individual: 31.05, individualChild: 69.00, individualSpouse: 56.93, family: 94.88 },
+            { age: 50, individual: 31.05, individualChild: 69.00, individualSpouse: 56.93, family: 94.88 },
+            { age: 64, individual: 31.05, individualChild: 69.00, individualSpouse: 56.93, family: 94.88 }
+        ];
+
+        const palic_3units_car_accident = [
+            { age: 1, male: 18.55, female: 24.26 },
+            { age: 2, male: 18.55, female: 24.26 },
+            { age: 3, male: 18.55, female: 24.26 },
+            { age: 4, male: 18.55, female: 24.26 },
+            { age: 5, male: 18.55, female: 24.26 },
+            { age: 6, male: 18.55, female: 24.26 },
+            { age: 7, male: 18.55, female: 24.26 },
+            { age: 8, male: 18.55, female: 24.26 },
+            { age: 9, male: 18.55, female: 24.26 },
+            { age: 10, male: 18.55, female: 24.26 },
+            { age: 11, male: 18.55, female: 24.26 },
+            { age: 12, male: 18.55, female: 24.26 },
+            { age: 13, male: 18.55, female: 24.26 },
+            { age: 14, male: 18.55, female: 24.26 },
+            { age: 15, male: 18.55, female: 24.26 },
+            { age: 16, male: 18.55, female: 24.26 },
+            { age: 17, male: 18.55, female: 24.26 },
+            { age: 18, male: 18.55, female: 24.26 },
+            { age: 19, male: 18.55, female: 24.26 },
+            { age: 20, male: 18.55, female: 24.26 },
+            { age: 21, male: 18.55, female: 24.26 },
+            { age: 22, male: 18.55, female: 24.26 },
+            { age: 23, male: 18.55, female: 24.26 },
+            { age: 24, male: 18.55, female: 24.26 },
+            { age: 25, male: 18.55, female: 24.26 },
+            { age: 26, male: 18.72, female: 24.82 },
+            { age: 27, male: 18.87, female: 25.38 },
+            { age: 28, male: 19.02, female: 25.94 },
+            { age: 29, male: 19.17, female: 26.50 },
+            { age: 30, male: 19.32, female: 27.07 },
+            { age: 31, male: 19.47, female: 27.07 },
+            { age: 32, male: 19.63, female: 27.07 },
+            { age: 33, male: 19.78, female: 27.07 },
+            { age: 34, male: 19.93, female: 27.07 },
+            { age: 35, male: 20.08, female: 27.07 },
+            { age: 36, male: 20.23, female: 27.07 },
+            { age: 37, male: 20.37, female: 27.07 },
+            { age: 38, male: 20.67, female: 27.07 },
+            { age: 39, male: 20.91, female: 27.35 },
+            { age: 40, male: 21.16, female: 27.64 },
+            { age: 41, male: 21.45, female: 27.82 },
+            { age: 42, male: 21.16, female: 28.08 },
+            { age: 43, male: 22.04, female: 27.99 },
+            { age: 44, male: 22.40, female: 28.08 },
+            { age: 45, male: 22.64, female: 28.08 },
+            { age: 46, male: 23.03, female: 28.09 },
+            { age: 47, male: 23.42, female: 28.15 },
+            { age: 48, male: 23.81, female: 28.15 },
+            { age: 49, male: 24.20, female: 28.15 },
+            { age: 50, male: 24.59, female: 28.15 },
+            { age: 51, male: 24.98, female: 28.15 },
+            { age: 52, male: 25.37, female: 28.15 },
+            { age: 53, male: 25.76, female: 28.15 },
+            { age: 54, male: 26.16, female: 28.15 },
+            { age: 55, male: 26.16, female: 28.15 },
+            { age: 56, male: 26.16, female: 28.15 },
+            { age: 57, male: 26.16, female: 28.15 },
+            { age: 58, male: 26.16, female: 28.15 },
+            { age: 59, male: 26.16, female: 28.15 },
+            { age: 60, male: 26.16, female: 28.15 },
+            { age: 61, male: 26.16, female: 28.15 },
+            { age: 62, male: 26.16, female: 28.15 },
+            { age: 63, male: 26.16, female: 28.15 },
+            { age: 64, male: 26.16, female: 28.15 }
+        ];
+
+        const palic_3units_sd = [
+            { age: 1, male: 5.04, female: 6.45 },
+            { age: 2, male: 5.04, female: 6.45 },
+            { age: 3, male: 5.04, female: 6.45 },
+            { age: 4, male: 5.04, female: 6.45 },
+            { age: 5, male: 5.04, female: 6.45 },
+            { age: 6, male: 5.04, female: 6.45 },
+            { age: 7, male: 5.04, female: 6.45 },
+            { age: 8, male: 5.04, female: 6.45 },
+            { age: 9, male: 5.04, female: 6.45 },
+            { age: 10, male: 5.04, female: 6.45 },
+            { age: 11, male: 5.04, female: 6.45 },
+            { age: 12, male: 5.04, female: 6.45 },
+            { age: 13, male: 5.04, female: 6.45 },
+            { age: 14, male: 5.04, female: 6.45 },
+            { age: 15, male: 5.04, female: 6.45 },
+            { age: 16, male: 5.04, female: 6.45 },
+            { age: 17, male: 5.04, female: 6.45 },
+            { age: 18, male: 5.04, female: 6.45 },
+            { age: 19, male: 5.04, female: 6.45 },
+            { age: 20, male: 5.04, female: 6.45 },
+            { age: 21, male: 5.04, female: 6.45 },
+            { age: 22, male: 5.04, female: 6.45 },
+            { age: 23, male: 5.04, female: 6.45 },
+            { age: 24, male: 5.04, female: 6.45 },
+            { age: 25, male: 5.04, female: 6.45 },
+            { age: 26, male: 5.13, female: 6.59 },
+            { age: 27, male: 5.20, female: 6.73 },
+            { age: 28, male: 5.29, female: 6.87 },
+            { age: 29, male: 5.37, female: 7.00 },
+            { age: 30, male: 5.46, female: 7.14 },
+            { age: 31, male: 5.69, female: 7.47 },
+            { age: 32, male: 5.94, female: 7.81 },
+            { age: 33, male: 6.19, female: 8.14 },
+            { age: 34, male: 6.46, female: 8.48 },
+            { age: 35, male: 6.71, female: 8.82 },
+            { age: 36, male: 7.25, female: 9.47 },
+            { age: 37, male: 7.85, female: 10.15 },
+            { age: 38, male: 8.39, female: 10.87 },
+            { age: 39, male: 8.95, female: 11.62 },
+            { age: 40, male: 9.55, female: 12.40 },
+            { age: 41, male: 10.45, female: 13.49 },
+            { age: 42, male: 11.39, female: 14.65 },
+            { age: 43, male: 12.50, female: 15.84 },
+            { age: 44, male: 13.70, female: 17.16 },
+            { age: 45, male: 14.94, female: 18.45 },
+            { age: 46, male: 16.33, female: 19.65 },
+            { age: 47, male: 17.73, female: 20.91 },
+            { age: 48, male: 19.24, female: 22.21 },
+            { age: 49, male: 20.84, female: 23.57 },
+            { age: 50, male: 22.51, female: 25.01 },
+            { age: 51, male: 24.54, female: 26.66 },
+            { age: 52, male: 26.64, female: 28.40 },
+            { age: 53, male: 28.89, female: 30.21 },
+            { age: 54, male: 31.23, female: 32.08 },
+            { age: 55, male: 33.68, female: 34.09 },
+            { age: 56, male: 36.62, female: 36.24 },
+            { age: 57, male: 39.69, female: 38.51 },
+            { age: 58, male: 42.87, female: 40.75 },
+            { age: 59, male: 46.21, female: 43.09 },
+            { age: 60, male: 66.14, female: 60.71 },
+            { age: 61, male: 70.23, female: 64.28 },
+            { age: 62, male: 74.48, female: 67.95 },
+            { age: 63, male: 78.70, female: 71.74 },
+            { age: 64, male: 83.21, female: 75.61 }
+        ];
+
+
+        document.addEventListener("DOMContentLoaded", function () {
+            populateAges();
+
+            document.querySelector(".sv_rick_btn").addEventListener("click", validateAndSubmit);
+        });
+
+        // Function to populate age dropdowns dynamically
+        function populateAges() {
+            let ageDropdowns = ["sv_rick_ageSelf", "sv_rick_spouseAge"];
+            ageDropdowns.forEach(id => {
+                let dropdown = document.getElementById(id);
+                dropdown.innerHTML = ""; // Clear existing options
+                for (let i = 0; i <= 64; i++) {
+                    let option = document.createElement("option");
+                    option.value = i;
+                    option.text = i;
+                    dropdown.appendChild(option);
+                }
+                dropdown.value = "0"; // Default selection
+            });
+
+            let childDropdown = document.getElementById("sv_rick_childrenCount");
+            childDropdown.innerHTML = ""; // Clear existing options
+            for (let i = 0; i <= 10; i++) {
+                let option = document.createElement("option");
+                option.value = i;
+                option.text = i;
+                childDropdown.appendChild(option);
+            }
+            childDropdown.value = "0"; // Default selection
+        }
+
+        // Function to validate form input before submission
+        function validateAndSubmit() {
+            let selfAge = parseInt(document.getElementById("sv_rick_ageSelf").value);
+            let selfGender = document.querySelector('input[name="sv_rick_gender1"]:checked');
+
+            let spouseAge = parseInt(document.getElementById("sv_rick_spouseAge").value);
+            let spouseGender = document.querySelector('input[name="sv_rick_gender2"]:checked');
+
+            let childrenCount = parseInt(document.getElementById("sv_rick_childrenCount").value);
+
+            // Validation messages
+            let errorMessage = "";
+
+            // Validate Self (Mandatory)
+            if (selfAge <= 0 || !selfGender) {
+                errorMessage = "Self details are required. Please select an age greater than 0 and choose a gender.";
+            }
+
+            // Validate Spouse (Only if any spouse detail is entered, both must be complete)
+            if ((spouseAge > 0 || spouseGender) && (spouseAge <= 0 || !spouseGender)) {
+                errorMessage = "If spouse details are provided, both age and gender must be selected.";
+            }
+
+            // Show error message and stop submission if validation fails
+            if (errorMessage) {
+                alert(errorMessage);
+                return;
+            }
+
+            // If validation passes, show the summary card
+            showSummaryCard(selfAge, selfGender.value, spouseAge, spouseGender ? spouseGender.value : "Not Provided", childrenCount);
+            displayInsurancePlan();
+
+            let maleTotal = 0
+            let femaleTotal = 0
+            let childTotal = 0
+            let accidentTotal = {}
+            if (selfAge > 0 && selfGender.value == 'Male') {
+                maleTotal = getMaleTotal(selfAge)
+            }
+            if (selfAge > 0 && selfGender.value == 'Female') {
+                femaleTotal = getFemaleTotal(selfAge)
+            }
+
+            if (spouseAge > 0 && spouseGender.value == 'Male') {
+                maleTotal = maleTotal + getMaleTotal(spouseAge)
+            }
+            if (spouseAge > 0 && spouseGender.value == 'Female') {
+                femaleTotal = femaleTotal + getFemaleTotal(spouseAge)
+            }
+
+            if (selfAge > 0 && childrenCount > 0) {
+                childTotal = getChildTotal(selfAge, childrenCount)
+            }
+
+            accidentTotal = getAccidentTotal();
+            console.log('MaleTotal: ', maleTotal)
+            console.log('FemaleTotal: ', femaleTotal)
+            console.log('childTotal: ', childTotal)
+            console.log('accidentTotal: ', accidentTotal)
+            let accidentTotalValue = parseFloat(accidentTotal.value) || 0; // Ensuring it’s a valid number
+            let finalTotal = maleTotal + femaleTotal + childTotal + accidentTotalValue;
+            console.log('finalTotal', finalTotal)
+            let planContainer = document.getElementById("insuranceCardContainer");
+            planContainer.innerHTML += "<h3>PALIC</h3>"; // Clear existing cards
+            let card = document.createElement("div");
+            card.classList.add("sv_rick_card");
+            card.innerHTML = `
+            <p><strong>2 Units | $${finalTotal.toFixed(2)} per Month for ${accidentTotal.type}</strong></p>
+        `;
+
+            planContainer.appendChild(card);
+
+
+
+            let maleTotal3Unit = 0
+            let femaleTotal3Unit = 0
+            let childTotal3Unit = 0
+            let accidentTotal3Unit = {}
+            if (selfAge > 0 && selfGender.value == 'Male') {
+                maleTotal3Unit = get3UnitMaleTotal(selfAge)
+            }
+            if (selfAge > 0 && selfGender.value == 'Female') {
+                femaleTotal3Unit = get3UnitFemaleTotal(selfAge)
+            }
+
+            if (spouseAge > 0 && spouseGender.value == 'Male') {
+                maleTotal3Unit = maleTotal3Unit + get3UnitMaleTotal(spouseAge)
+            }
+            if (spouseAge > 0 && spouseGender.value == 'Female') {
+                femaleTotal3Unit = femaleTotal3Unit + get3UnitFemaleTotal(spouseAge)
+            }
+
+            if (selfAge > 0 && childrenCount > 0) {
+                childTotal3Unit = get3UnitChildTotal(selfAge, childrenCount)
+            }
+
+            accidentTotal3Unit = get3unitAccidentTotal();
+            console.log('3UnitMaleTotal: ', maleTotal3Unit)
+            console.log('3UnitFemaleTotal: ', femaleTotal3Unit)
+            console.log('3UnitchildTotal: ', childTotal3Unit)
+            console.log('3UnitaccidentTotal: ', accidentTotal3Unit)
+            let accidentTotalValue3Unit = parseFloat(accidentTotal3Unit.value) || 0; // Ensuring it’s a valid number
+            let finalTotal3Unit = maleTotal3Unit + femaleTotal3Unit + childTotal3Unit + accidentTotalValue3Unit;
+            console.log('finalTotal', finalTotal3Unit)
+            
+            let card3Unit = document.createElement("div");
+            card3Unit.classList.add("sv_rick_card");
+            card3Unit.innerHTML = `
+            <p><strong>3 Units | $${finalTotal3Unit.toFixed(2)} per Month for ${accidentTotal3Unit.type}</strong></p>
+        `;
+
+            planContainer.appendChild(card3Unit);
+
+        }
+
+        // Function to display submission summary
+        function showSummaryCard(selfAge, selfGender, spouseAge, spouseGender, childrenCount) {
+            let summaryCard = document.getElementById("summaryCard");
+
+            summaryCard.innerHTML = `
+        <h3>Submission Summary</h3>
+        <p><strong>Self:</strong> Age - ${selfAge}, Gender - ${selfGender}</p>
+        <p><strong>Spouse:</strong> ${spouseAge > 0 ? `Age - ${spouseAge}, Gender - ${spouseGender}` : "Not Provided"}</p>
+        <p><strong>Number of Children:</strong> ${childrenCount}</p>
+    `;
+            summaryCard.style.display = "block";
+        }
+
+        // Function to reset only the Self row
+        function sv_rick_resetSelf() {
+            document.getElementById("sv_rick_ageSelf").value = "0";
+            let genderRadios = document.getElementsByName("sv_rick_gender1");
+            genderRadios.forEach(radio => radio.checked = false);
+        }
+
+        // Function to reset only the Spouse row
+        function sv_rick_resetSpouse() {
+            document.getElementById("sv_rick_spouseAge").value = "0";
+            let genderRadios = document.getElementsByName("sv_rick_gender2");
+            genderRadios.forEach(radio => radio.checked = false);
+        }
+
+        // Function to reset Children count to 0
+        function sv_rick_resetChildren() {
+            document.getElementById("sv_rick_childrenCount").value = "0";
+        }
+
+        // Function to reset the entire form
+        function sv_rick_resetForm() {
+            populateAges(); // Repopulate age dropdowns
+            document.getElementById("sv_rick_childrenCount").value = "0"; // Reset children count
+            let allRadios = document.querySelectorAll('input[type="radio"]');
+            allRadios.forEach(radio => radio.checked = false); // Uncheck all radio buttons
+
+            // Hide the summary card after resetting
+            document.getElementById("summaryCard").style.display = "none";
+            document.getElementById("sv_card_container_premiums").style.display = "none";
+
+            let planContainer = document.getElementById("insuranceCardContainer");
+            planContainer.innerHTML = "";
+
+        }
+
+        // Function to get the age bracket based on self age
+        function getAgeBracket(age) {
+            if (age >= 18 && age <= 29) return "18-29";
+            if (age >= 30 && age <= 44) return "30-44";
+            if (age >= 45 && age <= 54) return "45-54";
+            if (age >= 55 && age <= 64) return "55-64";
+            return null; // Age out of range
+        }
+
+
+        function displayInsurancePlan() {
+            let selfAge = parseInt(document.getElementById("sv_rick_ageSelf").value);
+            let selfGender = document.querySelector('input[name="sv_rick_gender1"]:checked');
+
+            let spouseAge = parseInt(document.getElementById("sv_rick_spouseAge").value);
+            let spouseGender = document.querySelector('input[name="sv_rick_gender2"]:checked');
+
+            let childrenCount = parseInt(document.getElementById("sv_rick_childrenCount").value);
+
+            // Checking conditions for selection
+            let hasSelf = selfAge > 0 && selfGender;
+            let hasSpouse = spouseAge > 0 && spouseGender;
+            let hasChildren = childrenCount > 0;
+
+            if (!hasSelf) {
+                alert("Self details are required.");
+                return;
+            }
+
+            let ageBracket = getAgeBracket(selfAge);
+            if (!ageBracket) {
+                alert("Age must be between 18-64.");
+                return;
+            }
+
+            // Determine correct pricing key based on selection
+            let pricingKey = "E"; // Default Employee only
+            let planText = "Employee"; // Default plan description
+
+            if (hasSelf && hasSpouse && hasChildren) {
+                pricingKey = "EF"; // Employee + Family
+                planText = "Employee + Family (EF)";
+            } else if (hasSelf && hasSpouse && !hasChildren) {
+                pricingKey = "ES"; // Employee + Spouse
+                planText = "Employee + Spouse";
+            } else if (hasSelf && !hasSpouse && hasChildren) {
+                pricingKey = "EC"; // Employee + Children
+                planText = "Employee + Children (EC)";
+            }
+            document.getElementById("sv_card_container_premiums").style.display = "block";
+
+            let planContainer = document.getElementById("insuranceCardContainer");
+            planContainer.innerHTML = "<h3>America's Choice Information</h3>"; // Clear existing cards
+
+            insurancePlans.forEach(plan => {
+                let price = plan.rates[ageBracket][pricingKey];
+
+                let card = document.createElement("div");
+                card.classList.add("sv_rick_card");
+                card.innerHTML = `
+            <p><strong>${plan.deductible} | $${price.toFixed(2)} per Month for ${planText}</strong></p>
+        `;
+
+                planContainer.appendChild(card);
+            });
+        }
+
+        function getMaleTotal(age) {
+            // Fetch values from each plan based on age
+            let individualTotal = palic_2units_individual.find(entry => entry.age === age)?.male || 0;
+            let carAccident = palic_2units_car_accident.find(entry => entry.age === age)?.male || 0;
+            let sdMaleTotal = palic_2units_sd.find(entry => entry.age === age)?.male || 0;
+
+            // Sum up all the values
+            let maleTotal = individualTotal + carAccident + sdMaleTotal;
+
+            return Number(maleTotal.toFixed(2));
+        }
+
+        function getFemaleTotal(age) {
+            // Fetch values from each plan based on age
+            let individualTotal = palic_2units_individual.find(entry => entry.age === age)?.female || 0;
+            let carAccident = palic_2units_car_accident.find(entry => entry.age === age)?.female || 0;
+            let sdMaleTotal = palic_2units_sd.find(entry => entry.age === age)?.female || 0;
+
+            // Sum up all the values
+            let femaleTotal = individualTotal + carAccident + sdMaleTotal;
+
+            return Number(femaleTotal.toFixed(2));
+        }
+
+        function getChildTotal(age, count) {
+            let childAmt = palic_2units_individual.find(entry => entry.age === age)?.individualChildren || 0;
+            let childTotal = childAmt * count;
+            return Number(childTotal.toFixed(2));
+        }
+
+        function get3UnitMaleTotal(age) {
+            // Fetch values from each plan based on age
+            let individualTotal = palic_3units_individual.find(entry => entry.age === age)?.male || 0;
+            let carAccident = palic_3units_car_accident.find(entry => entry.age === age)?.male || 0;
+            let sdMaleTotal = palic_3units_sd.find(entry => entry.age === age)?.male || 0;
+
+            // Sum up all the values
+            let maleTotal = individualTotal + carAccident + sdMaleTotal;
+
+            return Number(maleTotal.toFixed(2));
+        }
+
+        function get3UnitFemaleTotal(age) {
+            // Fetch values from each plan based on age
+            let individualTotal = palic_3units_individual.find(entry => entry.age === age)?.female || 0;
+            let carAccident = palic_3units_car_accident.find(entry => entry.age === age)?.female || 0;
+            let sdMaleTotal = palic_3units_sd.find(entry => entry.age === age)?.female || 0;
+
+            // Sum up all the values
+            let femaleTotal = individualTotal + carAccident + sdMaleTotal;
+
+            return Number(femaleTotal.toFixed(2));
+        }
+
+        function get3UnitChildTotal(age, count) {
+            let childAmt = palic_3units_individual.find(entry => entry.age === age)?.individualChildren || 0;
+            let childTotal = childAmt * count;
+            return Number(childTotal.toFixed(2));
+        }
+
+
+        function getAccidentTotal() {
+            let selfAge = parseInt(document.getElementById("sv_rick_ageSelf").value);
+            let selfGender = document.querySelector('input[name="sv_rick_gender1"]:checked');
+
+            let spouseAge = parseInt(document.getElementById("sv_rick_spouseAge").value);
+            let spouseGender = document.querySelector('input[name="sv_rick_gender2"]:checked');
+
+            let childrenCount = parseInt(document.getElementById("sv_rick_childrenCount").value);
+
+            // Checking conditions for selection
+            let hasSelf = selfAge > 0 && selfGender;
+            let hasSpouse = spouseAge > 0 && spouseGender;
+            let hasChildren = childrenCount > 0;
+
+            if (!hasSelf) {
+                alert("Self details are required.");
+                return { value: 0, type: 'na' } // Return 0 if self details are missing
+            }
+
+            let accidentPlan = palic_2units_accident.find(entry => entry.age === selfAge);
+
+            if (!accidentPlan) {
+                alert("Age must be between 18-64.");
+                return { value: 0, type: 'na' } // Return 0 if self details are missing
+            }
+
+            // Determine correct pricing key based on selection
+            let pricingKey = "individual"; // Default Employee only
+            let planText = "Employee"; // Default plan description
+
+            if (hasSelf && hasSpouse && hasChildren) {
+                pricingKey = "family"; // Employee + Family
+                planText = "Employee + Family (EF)";
+            } else if (hasSelf && hasSpouse && !hasChildren) {
+                pricingKey = "individualSpouse"; // Employee + Spouse
+                planText = "Employee + Spouse";
+            } else if (hasSelf && !hasSpouse && hasChildren) {
+                pricingKey = "individualChild"; // Employee + Children
+                planText = "Employee + Children (EC)";
+            }
+
+            // Get the total amount based on the selected plan
+            let accidentTotal = accidentPlan[pricingKey] || 0;
+
+            console.log(`Accident Plan for Age ${selfAge}: ${planText} - $${accidentTotal.toFixed(2)}`);
+            return { value: accidentTotal.toFixed(2), type: planText } // Return 0 if self details are missing
+            // return Number(accidentTotal.toFixed(2));
+        }
+
+        function get3unitAccidentTotal() {
+            let selfAge = parseInt(document.getElementById("sv_rick_ageSelf").value);
+            let selfGender = document.querySelector('input[name="sv_rick_gender1"]:checked');
+
+            let spouseAge = parseInt(document.getElementById("sv_rick_spouseAge").value);
+            let spouseGender = document.querySelector('input[name="sv_rick_gender2"]:checked');
+
+            let childrenCount = parseInt(document.getElementById("sv_rick_childrenCount").value);
+
+            // Checking conditions for selection
+            let hasSelf = selfAge > 0 && selfGender;
+            let hasSpouse = spouseAge > 0 && spouseGender;
+            let hasChildren = childrenCount > 0;
+
+            if (!hasSelf) {
+                alert("Self details are required.");
+                return { value: 0, type: 'na' } // Return 0 if self details are missing
+            }
+
+            let accidentPlan = palic_3units_accident.find(entry => entry.age === selfAge);
+
+            if (!accidentPlan) {
+                alert("Age must be between 18-64.");
+                return { value: 0, type: 'na' } // Return 0 if self details are missing
+            }
+
+            // Determine correct pricing key based on selection
+            let pricingKey = "individual"; // Default Employee only
+            let planText = "Employee"; // Default plan description
+
+            if (hasSelf && hasSpouse && hasChildren) {
+                pricingKey = "family"; // Employee + Family
+                planText = "Employee + Family (EF)";
+            } else if (hasSelf && hasSpouse && !hasChildren) {
+                pricingKey = "individualSpouse"; // Employee + Spouse
+                planText = "Employee + Spouse";
+            } else if (hasSelf && !hasSpouse && hasChildren) {
+                pricingKey = "individualChild"; // Employee + Children
+                planText = "Employee + Children (EC)";
+            }
+
+            // Get the total amount based on the selected plan
+            let accidentTotal = accidentPlan[pricingKey] || 0;
+
+            console.log(`Accident Plan for Age ${selfAge}: ${planText} - $${accidentTotal.toFixed(2)}`);
+            return { value: accidentTotal.toFixed(2), type: planText } // Return 0 if self details are missing
+            // return Number(accidentTotal.toFixed(2));
+        }
+
+
+
+
+    </script>
+
+</body>
+
+</html>
