@@ -392,8 +392,24 @@
             { age: 46, individual: 31.05, individualChild: 69.00, individualSpouse: 56.93, family: 94.88 },
             { age: 47, individual: 31.05, individualChild: 69.00, individualSpouse: 56.93, family: 94.88 },
             { age: 48, individual: 31.05, individualChild: 69.00, individualSpouse: 56.93, family: 94.88 },
+            { age: 49, individual: 31.05, individualChild: 69.00, individualSpouse: 56.93, family: 94.88 },
+            { age: 50, individual: 31.05, individualChild: 69.00, individualSpouse: 56.93, family: 94.88 },
+            { age: 51, individual: 31.05, individualChild: 69.00, individualSpouse: 56.93, family: 94.88 },
+            { age: 52, individual: 31.05, individualChild: 69.00, individualSpouse: 56.93, family: 94.88 },
+            { age: 53, individual: 31.05, individualChild: 69.00, individualSpouse: 56.93, family: 94.88 },
+            { age: 54, individual: 31.05, individualChild: 69.00, individualSpouse: 56.93, family: 94.88 },
+            { age: 55, individual: 31.05, individualChild: 69.00, individualSpouse: 56.93, family: 94.88 },
+            { age: 56, individual: 31.05, individualChild: 69.00, individualSpouse: 56.93, family: 94.88 },
+            { age: 57, individual: 31.05, individualChild: 69.00, individualSpouse: 56.93, family: 94.88 },
+            { age: 58, individual: 31.05, individualChild: 69.00, individualSpouse: 56.93, family: 94.88 },
+            { age: 59, individual: 31.05, individualChild: 69.00, individualSpouse: 56.93, family: 94.88 },
+            { age: 60, individual: 31.05, individualChild: 69.00, individualSpouse: 56.93, family: 94.88 },
+            { age: 61, individual: 31.05, individualChild: 69.00, individualSpouse: 56.93, family: 94.88 },
+            { age: 62, individual: 31.05, individualChild: 69.00, individualSpouse: 56.93, family: 94.88 },
+            { age: 63, individual: 31.05, individualChild: 69.00, individualSpouse: 56.93, family: 94.88 },
             { age: 64, individual: 31.05, individualChild: 69.00, individualSpouse: 56.93, family: 94.88 }
         ];
+
 
         const palic_2units_car_accident = [
             { age: 1, male: 18.55, female: 24.26 },
@@ -649,8 +665,22 @@
             { age: 48, individual: 31.05, individualChild: 69.00, individualSpouse: 56.93, family: 94.88 },
             { age: 49, individual: 31.05, individualChild: 69.00, individualSpouse: 56.93, family: 94.88 },
             { age: 50, individual: 31.05, individualChild: 69.00, individualSpouse: 56.93, family: 94.88 },
+            { age: 51, individual: 31.05, individualChild: 69.00, individualSpouse: 56.93, family: 94.88 },
+            { age: 52, individual: 31.05, individualChild: 69.00, individualSpouse: 56.93, family: 94.88 },
+            { age: 53, individual: 31.05, individualChild: 69.00, individualSpouse: 56.93, family: 94.88 },
+            { age: 54, individual: 31.05, individualChild: 69.00, individualSpouse: 56.93, family: 94.88 },
+            { age: 55, individual: 31.05, individualChild: 69.00, individualSpouse: 56.93, family: 94.88 },
+            { age: 56, individual: 31.05, individualChild: 69.00, individualSpouse: 56.93, family: 94.88 },
+            { age: 57, individual: 31.05, individualChild: 69.00, individualSpouse: 56.93, family: 94.88 },
+            { age: 58, individual: 31.05, individualChild: 69.00, individualSpouse: 56.93, family: 94.88 },
+            { age: 59, individual: 31.05, individualChild: 69.00, individualSpouse: 56.93, family: 94.88 },
+            { age: 60, individual: 31.05, individualChild: 69.00, individualSpouse: 56.93, family: 94.88 },
+            { age: 61, individual: 31.05, individualChild: 69.00, individualSpouse: 56.93, family: 94.88 },
+            { age: 62, individual: 31.05, individualChild: 69.00, individualSpouse: 56.93, family: 94.88 },
+            { age: 63, individual: 31.05, individualChild: 69.00, individualSpouse: 56.93, family: 94.88 },
             { age: 64, individual: 31.05, individualChild: 69.00, individualSpouse: 56.93, family: 94.88 }
         ];
+
 
         const palic_3units_car_accident = [
             { age: 1, male: 18.55, female: 24.26 },
@@ -924,7 +954,7 @@
             let accidentTotalValue3Unit = parseFloat(accidentTotal3Unit.value) || 0; // Ensuring it’s a valid number
             let finalTotal3Unit = maleTotal3Unit + femaleTotal3Unit + childTotal3Unit + accidentTotalValue3Unit;
             console.log('finalTotal', finalTotal3Unit)
-            
+
             let card3Unit = document.createElement("div");
             card3Unit.classList.add("sv_rick_card");
             card3Unit.innerHTML = `
@@ -985,10 +1015,12 @@
 
         // Function to get the age bracket based on self age
         function getAgeBracket(age) {
+
             if (age >= 18 && age <= 29) return "18-29";
             if (age >= 30 && age <= 44) return "30-44";
             if (age >= 45 && age <= 54) return "45-54";
             if (age >= 55 && age <= 64) return "55-64";
+
             return null; // Age out of range
         }
 
