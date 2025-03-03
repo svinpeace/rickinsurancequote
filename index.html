@@ -913,11 +913,11 @@
             let finalTotal = maleTotal + femaleTotal + childTotal + accidentTotalValue;
             console.log('finalTotal', finalTotal)
             let planContainer = document.getElementById("insuranceCardContainer");
-            planContainer.innerHTML += "<h3>PALIC</h3>"; // Clear existing cards
+            planContainer.innerHTML += "<h3 style='margin-top:30px'><strong>Plans W/O Maternity</strong></h3>"; // Clear existing cards
             let card = document.createElement("div");
             card.classList.add("sv_rick_card");
             card.innerHTML = `
-            <p><strong>2 Units | $${finalTotal.toFixed(2)} per Month for ${accidentTotal.type}</strong></p>
+            <p><strong>2 Units | $${finalTotal.toFixed(2)} </strong> per Month for ${accidentTotal.type}</p>
         `;
 
             planContainer.appendChild(card);
@@ -958,7 +958,7 @@
             let card3Unit = document.createElement("div");
             card3Unit.classList.add("sv_rick_card");
             card3Unit.innerHTML = `
-            <p><strong>3 Units | $${finalTotal3Unit.toFixed(2)} per Month for ${accidentTotal3Unit.type}</strong></p>
+            <p><strong>3 Units | $${finalTotal3Unit.toFixed(2)} </strong> per Month for ${accidentTotal3Unit.type}</p>
         `;
 
             planContainer.appendChild(card3Unit);
@@ -1067,7 +1067,7 @@
             document.getElementById("sv_card_container_premiums").style.display = "block";
 
             let planContainer = document.getElementById("insuranceCardContainer");
-            planContainer.innerHTML = "<h3>America's Choice Information</h3>"; // Clear existing cards
+            planContainer.innerHTML = "<h3><strong>ACA Compliant Plans</strong></h3>"; // Clear existing cards
 
             insurancePlans.forEach(plan => {
                 let price = plan.rates[ageBracket][pricingKey];
@@ -1075,7 +1075,7 @@
                 let card = document.createElement("div");
                 card.classList.add("sv_rick_card");
                 card.innerHTML = `
-            <p><strong>${plan.deductible} | $${price.toFixed(2)} per Month for ${planText}</strong></p>
+            <p><strong>${plan.deductible} | $${price.toFixed(2)} </strong> per Month for ${planText}</p>
         `;
 
                 planContainer.appendChild(card);
